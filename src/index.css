@@ -1,13 +1,114 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html, body {
+	margin:0;
+	padding:0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+body {
+	background-color: black;
 }
+
+.result-chest {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	margin-top: 40px;
+}
+
+.overlay {
+	z-index: 0;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0.8;
+	margin-top: -110px;
+}
+
+.cinema {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	width: 100%;
+	min-height: 100vh;
+	color: #d9d9d9;
+	background-color: #080808;
+	font-family: ubuntu;
+}
+
+.cinema-info {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+.main {
+	max-width: 500px;
+}
+.meta {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.movie {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	color: #d9d9d9;
+	background-color: #0e1111;
+	padding: 10px;
+	max-width: 300px;
+	margin-bottom: 30px;
+	font-family: ubuntu;
+	border-radius: 5px;
+}
+
+.movie p {
+	word-wrap:all;
+}
+
+.poster {
+	align-self: flex-start;
+	border-radius: 3px;
+}
+
+.exit {
+	font-size: 30px;
+	color: white;
+	font-weight: bolder;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	background-color: #0e1111;
+	min-height: 70px;
+	color: white;
+	font-size: 30px;
+	font-family: ubuntu;
+	font-weight: bold;
+	padding: 0 20px;
+ }
+
+ .search {
+ 	font-size: 20px;
+ 	border-radius: 3px;
+ 	outline: none;
+ 	border: 2px solid black;
+ 	padding: 5px;
+ 	font-family: ubuntu;
+ 	color: gray;
+ }
+
+ .feedback {
+ 	font-family: ubuntu;
+ 	color: white;
+ }
+
+ .app {
+ 	width: 100%;
+ }
