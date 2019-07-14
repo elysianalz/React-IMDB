@@ -7,11 +7,8 @@ class Cinema extends React.Component {
 	render(){
 		return (
 			<div className="cinema" style={this.props.style}>
-
 				<div className="exit" onClick={this.props.onClick}>x</div>
-				
 				<div className="cinema-info">
-
 					<div className="meta">
 						<img className="poster" src={this.props.poster}/>
 						<div className="meta-table">
@@ -58,7 +55,6 @@ class Cinema extends React.Component {
 							<h2>{this.props.title}</h2>
 							<p>{this.props.genre}</p>
 						</div>
-
 						<div>
 							<div><p>{this.props.plot}</p></div>
 							<div><p><b>Actors </b> {this.props.actors}</p></div>
@@ -66,9 +62,7 @@ class Cinema extends React.Component {
 							<div><p><b>Written by </b>{this.props.writers}</p></div>
 						</div>
 					</div>
-
 				</div>
-				
 			</div>
 		)
 	}
@@ -96,8 +90,10 @@ class ResultChest extends React.Component {
 		super(props)
 		this.state = {
 			movie: "",
+			movies: [],
 			view: false,
 			feedback: "",
+			number: -1,
 		}
 	}
 
@@ -109,7 +105,7 @@ class ResultChest extends React.Component {
 		})
 	}
 
-	handleClick(id){
+	handleClick(id, i){
 
 		let apiEndPoint = 'https://cors-anywhere.herokuapp.com/http://www.omdbapi.com/?apikey=c5289df8&plot=full&i='+id;
 		let xhttp = new XMLHttpRequest();
@@ -117,14 +113,17 @@ class ResultChest extends React.Component {
 		let self = this;
 		let view = self.state.view;
 		let offset = self.state.offset;
+		let number = self.state.number;
 
 		xhttp.onreadystatechange = function() {
 			if(this.readyState == 4 && this.status == 200) {
 				movie = JSON.parse(this.responseText);
 				view = true;
+				number = i;
 				self.setState({
 					movie: movie,
 					view: view,
+					number: number,
 				})
 			}
 		}
@@ -132,6 +131,11 @@ class ResultChest extends React.Component {
 		xhttp.open('GET', apiEndPoint, true);
 		xhttp.send();	
 
+	}
+
+	resize(movies){
+		this.state.movies[this.state.number -1].style.width = '100%';
+		this.state.movies[this.state.number -1].style.height = '100%';
 	}
 
 	renderMovies(movies){
@@ -146,20 +150,25 @@ class ResultChest extends React.Component {
 							year={movies[i].Year}
 							type={movies[i].Type}
 							key={id}
-							onClick={() => this.handleClick(id)}
+							keyProp={i}
+							onClick={() => this.handleClick(id, i)}
 						/>);
 			}
 		}
-
 		return (arr);
 	}
 		
 	render(){
 		return (
 			<div className="result-chest">	
-				{this.props.movies ? this.renderMovies(this.props.movies) : 
-									 <h1 className="feedback">SEARCH OUR DATABASE</h1>}
+				{this.props.movies ? this.renderMovies(this.props.movies) : null}
+
+				{this.props.feedback ? <div className="feedback-container">
+											<h1 className="feedback">{this.props.feedback}</h1>
+										</div> : null}
+
 				{this.state.view ? <div className="overlay"></div> : null}
+
 				{this.state.view ? <Cinema
 										style={{marginTop: `${window.pageYOffset-110}px`}} 
 										onClick={() => this.exit()} 
@@ -187,7 +196,7 @@ class Search extends React.Component {
 		return (
 			<div className="nav">
 				<span>React Movie Database</span>
-				<input className="search" type="text" onChange={this.props.onChange} />
+				<input placeholder="Search here..." className="search" type="text" onChange={this.props.onChange} />
 			</div>
 		)
 	}
@@ -199,6 +208,7 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			movies: "",
+			feedback: "Search thousands of movies reactively.",
 		}
 	}
 
@@ -213,9 +223,28 @@ class App extends React.Component {
 		xhttp.onreadystatechange = function() {
 			if(this.readyState == 4 && this.status == 200) {
 				movies = JSON.parse(this.responseText);
+				if(movies.Response == "False"){
+					if(movies.Error == "Something went wrong."){
+						self.setState({
+							feedback: 'Search thousands of movies reactively.',
+						})
+					} else {
+						self.setState({
+							feedback: movies.Error,
+						})
+					}	
+				} else {
+					self.setState({
+						feedback: null,
+					})
+				}
 				self.setState({
 					movies: movies,
 				})
+			} else if(this.readyState == 3 && this.status == 200){
+				self.setState({
+					feedback: "Loading...",
+				});
 			}
 		}
 			
@@ -231,7 +260,7 @@ class App extends React.Component {
 		return (
 			<div className="app">
 				<Search onChange={(e) => this.handleChange(e)} />
-				<ResultChest movies={this.state.movies.Search} />
+				<ResultChest movies={this.state.movies.Search} feedback={this.state.feedback} />
 			</div>
 		)
 	}		
