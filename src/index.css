@@ -1,6 +1,7 @@
 html, body {
 	margin:0;
 	padding:0;
+	min-height: 100%;
 	height: 100%;
 }
 
@@ -60,7 +61,8 @@ body {
 	color: #d9d9d9;
 	background-color: #0e1111;
 	padding: 10px;
-	max-width: 300px;
+	width: 300px;
+	height: 531px;
 	margin-bottom: 30px;
 	font-family: ubuntu;
 	border-radius: 5px;
@@ -70,8 +72,13 @@ body {
 	word-wrap:all;
 }
 
-.poster {
+.poster-cinema {
 	align-self: flex-start;
+	border-radius: 3px;
+}
+
+.poster {
+	align-self: center;
 	border-radius: 3px;
 }
 
@@ -120,6 +127,29 @@ body {
  	justify-content: center;
  }
 
+ .no-poster {
+ 	display:flex;
+ 	flex-direction: column;
+ 	justify-content: center;
+ 	align-items: center;
+ 	align-content: center;
+ 	height:424px;
+ 	color: white;
+ }
+
+ .no-poster-cinema {
+ 	display:flex;
+ 	flex-direction: column;
+ 	justify-content: center;
+ 	align-items: center;
+ 	align-content: center;
+ 	height:424px;
+ 	width: 300px;
+ 	border-radius: 3px;
+ 	color: #0e1111;
+ 	background-color: #d9d9d9;
+ }
+
  .app {
  	display: flex;
  	flex-direction: column;
@@ -128,5 +158,6 @@ body {
  }
 
  #root {
- 	height: 100%;
+ 	height:100%;
+ 	min-height: 100%;
  }

@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilm } from '@fortawesome/free-solid-svg-icons'
 import './index.css';
 
 class Cinema extends React.Component {
@@ -10,7 +12,9 @@ class Cinema extends React.Component {
 				<div className="exit" onClick={this.props.onClick}>x</div>
 				<div className="cinema-info">
 					<div className="meta">
-						<img className="poster" src={this.props.poster}/>
+						{this.props.poster == "N/A" ? <div className="no-poster-cinema"><FontAwesomeIcon icon={faFilm} size="10x"/></div> :
+													  <img className="poster-cinema" src={this.props.poster}/>}
+						
 						<div className="meta-table">
 							<table>
 								<tr><th>Media Information</th></tr>
@@ -73,7 +77,8 @@ class Movie extends React.Component {
 		return (
 			<div className="movie" onClick={this.props.onClick}>
 				<div>
-					<img className="poster" src={this.props.poster} />
+					{this.props.poster == "N/A" ? <div className="no-poster"><FontAwesomeIcon icon={faFilm} size="10x"/></div> : 
+												  <img className="poster" src={this.props.poster} />}
 				</div>
 				<div>
 					<p>{this.props.title} ({this.props.year})</p>
@@ -105,6 +110,11 @@ class ResultChest extends React.Component {
 		})
 	}
 
+	resize(movies){
+		this.state.movies[this.state.number -1].style.width = '100%';
+		this.state.movies[this.state.number -1].style.height = '100%';
+	}
+
 	handleClick(id, i){
 
 		let apiEndPoint = 'https://cors-anywhere.herokuapp.com/http://www.omdbapi.com/?apikey=c5289df8&plot=full&i='+id;
@@ -133,10 +143,6 @@ class ResultChest extends React.Component {
 
 	}
 
-	resize(movies){
-		this.state.movies[this.state.number -1].style.width = '100%';
-		this.state.movies[this.state.number -1].style.height = '100%';
-	}
 
 	renderMovies(movies){
 		const arr = [];
@@ -144,6 +150,7 @@ class ResultChest extends React.Component {
 		if(movies) {
 			for(var i=0; i < movies.length; i++){
 				let id = movies[i].imdbID;
+				console.log(movies[i].Poster);
 				arr.push(<Movie 
 							poster={movies[i].Poster} 
 							title={movies[i].Title} 
@@ -165,7 +172,7 @@ class ResultChest extends React.Component {
 
 				{this.props.feedback ? <div className="feedback-container">
 											<h1 className="feedback">{this.props.feedback}</h1>
-										</div> : null}
+								       </div> : null}
 
 				{this.state.view ? <div className="overlay"></div> : null}
 
